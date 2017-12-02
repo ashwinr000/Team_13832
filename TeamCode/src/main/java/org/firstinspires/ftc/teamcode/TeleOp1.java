@@ -54,12 +54,12 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name="TeleOp", group="13832")
 
-public class TeleOp1 extends OpMode
-{
+public class TeleOp1 extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
+    private DcMotor mechArm = null;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -70,6 +70,7 @@ public class TeleOp1 extends OpMode
 
         leftDrive = hardwareMap.dcMotor.get("leftMotor");
         rightDrive = hardwareMap.dcMotor.get("rightMotor");
+        mechArm = hardwareMap.dcMotor.get("armMotor");
 
         rightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -101,12 +102,15 @@ public class TeleOp1 extends OpMode
         double rightY = -gamepad1.right_stick_y;
         double leftX = gamepad1.left_stick_x;
         double rightX = gamepad1.right_stick_x;
+        double leftY2 = -gamepad2.left_stick_y;
 
         leftDrive.setPower(leftY + rightX);
         rightDrive.setPower(leftY - rightX);
+        mechArm.setPower(leftY2);
 
         telemetry.addData("Left Power", leftDrive.getPower());
         telemetry.addData("Right Power", rightDrive.getPower());
+        telemetry.addData("Mech Power", mechArm.getPower());
 
 
         // Show the elapsed game time and wheel power.
