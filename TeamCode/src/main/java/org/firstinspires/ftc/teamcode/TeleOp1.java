@@ -60,6 +60,7 @@ public class TeleOp1 extends OpMode {
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
     private DcMotor mechArm = null;
+    private DcMotor clamp = null;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -71,6 +72,7 @@ public class TeleOp1 extends OpMode {
         leftDrive = hardwareMap.dcMotor.get("leftMotor");
         rightDrive = hardwareMap.dcMotor.get("rightMotor");
         mechArm = hardwareMap.dcMotor.get("armMotor");
+        clamp = hardwareMap.dcMotor.get("clamp");
 
         rightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -94,23 +96,26 @@ public class TeleOp1 extends OpMode {
     }
 
     /*
-     * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
+     * Code to run REPEATEDLY after the driver hiets PLAY but before they hit STOP
      */
     @Override
     public void loop() {
-        double leftY = -gamepad1.left_stick_y;
-        double rightY = -gamepad1.right_stick_y;
+        double leftY = gamepad1.left_stick_y;
+        double rightY = gamepad1.right_stick_y;
         double leftX = gamepad1.left_stick_x;
         double rightX = gamepad1.right_stick_x;
         double leftY2 = -gamepad2.left_stick_y;
+        double rightY2 = -gamepad2.right_stick_y;
 
         leftDrive.setPower(leftY + rightX);
         rightDrive.setPower(leftY - rightX);
         mechArm.setPower(leftY2);
+        clamp.setPower(rightY2 * 0.25);
 
         telemetry.addData("Left Power", leftDrive.getPower());
         telemetry.addData("Right Power", rightDrive.getPower());
         telemetry.addData("Mech Power", mechArm.getPower());
+        telemetry.addData("Clamp Power", clamp.getPower());
 
 
         // Show the elapsed game time and wheel power.
