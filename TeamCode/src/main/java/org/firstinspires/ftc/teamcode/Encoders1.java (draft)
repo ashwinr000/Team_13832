@@ -18,7 +18,7 @@ public class Encoders1 extends LinearOpMode {
     private DcMotor rightDrive = null;
     private ElapsedTime runtime = new ElapsedTime();
 
-    static final double COUNT_PER_MOTOR_REV = 1440;
+    static final double COUNT_PER_MOTOR_REV = 300;
     static final double DRIVE_GEAR_REDUCTION = 2.0;
     static final double WHEEL_DIAMETER_INCHES = 4.0;
     static final double COUNT_PER_INCH = (COUNT_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
@@ -50,7 +50,9 @@ public class Encoders1 extends LinearOpMode {
 
         // waiting for driver to click play
         waitForStart();
-        encoderDrive(FORWARD_SPEED, 12, 12, 30);
+        // Mechanism Arm Test
+        encoderDrive(FORWARD_SPEED, 0, 0, 30);
+
     }
 
     public void encoderDrive(double speed,
@@ -63,8 +65,15 @@ public class Encoders1 extends LinearOpMode {
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newLeftTarget = leftDrive.getCurrentPosition() + (int) (leftInches * COUNT_PER_INCH * 12 / 53.5 * 12 / 13);
-            newRightTarget = rightDrive.getCurrentPosition() + (int) (rightInches * COUNT_PER_INCH * 12 / 53.5 * 12 / 13);
+            
+            // Basic function abilities:
+            newLeftTarget = (int) (COUNT_PER_INCH * leftInches);
+            newRightTarget = (int) (COUNT_PER_INCH * rightInches);
+            
+            // For testing:
+            newLeftTarget = (int) (COUNT_PER_MOTOR_REV * 0.2);
+            newRightTarget = (int) (COUNT_PER_MOTOR_REV * 0.2);
+            
             leftDrive.setTargetPosition(newLeftTarget);
             rightDrive.setTargetPosition(newRightTarget);
 
@@ -92,6 +101,7 @@ public class Encoders1 extends LinearOpMode {
                 telemetry.addData("Path2", "Running at %7d :%7d", leftDrive.getCurrentPosition(),
                 rightDrive.getCurrentPosition());
                 telemetry.update();
+
             }
 
             // Stop all motion;
